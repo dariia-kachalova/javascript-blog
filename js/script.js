@@ -36,7 +36,7 @@ function titleClickHandler(event) {
   console.log(targetArticle);
 }
 
-const optArticleSelector = '.post',
+  const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
   optTitleListSelector = '.titles';
 
