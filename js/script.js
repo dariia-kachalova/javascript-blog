@@ -224,6 +224,13 @@ function generateAuthors() {
     /* add generated code to html variable */
     html = html + linkHTML;
 
+    /* [NEW] check if this link is NOT already in allTags */
+    if (allAuthors.indexOf(linkHTML) == -1) {
+
+      /* [NEW] add generated code to allTags array */
+      allAuthors.push(linkHTML);
+    }
+
     /* insert HTML of all the links into the tags wrapper */
     authorsWrapper.innerHTML = html;
     console.log(authorsWrapper.innerHTML);
