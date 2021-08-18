@@ -47,6 +47,7 @@ const optArticleSelector = '.post',
   optCloudClassPrefix = 'tag-size-';
 
 
+
 function generateTitleLinks(customSelector = '') {
   /* remove contents of titleList */
   const titleList = document.querySelector(optTitleListSelector);
@@ -86,7 +87,7 @@ for (let link of links) {
 }
 
 
-function calculateTagsParams(tags){
+function calculateTagsParams(tags) {
   const params = { max: 0, min: 999999 };
 
   for (let tag in tags) {
@@ -98,19 +99,18 @@ function calculateTagsParams(tags){
 
   return params;
 }
-calculateTagsParams();
 
 
-function calculateTagClass (count, params) {
-  
+function calculateTagClass(count, params) {
+
   const normalizedCount = count - params.min;
   const normalizedMax = params.max - params.min;
   const percentage = normalizedCount / normalizedMax;
-  const classNumber = Math.floor( percentage * (optCloudClassCount - 1) + 1 );
-  
+  const classNumber = Math.floor(percentage * (optCloudClassCount - 1) + 1);
+
   return optCloudClassPrefix + classNumber;
 }
-calculateTagClass ();
+
 
 
 
@@ -172,7 +172,7 @@ function generateTags() {
 
   /* [NEW] add html from allTags to tagList */
   //tagList.innerHTML = allTags.join(' ');//
-  
+
   const tagsParams = calculateTagsParams(allTags);
   console.log('tagsParams:', tagsParams);
 
@@ -183,10 +183,10 @@ function generateTags() {
   for (let tag in allTags) {
 
     const tagLinkHTML = '<li><a class="' + calculateTagClass(allTags[tag], tagsParams) + '" href="#tag-' + tag + '"></a> (' + allTags[tag] + ') ' + '</li>';
-  
+
     /*generate code of a link and add it to allTagsHTML*/
-    allTagsHTML += tagLinkHTML ;
-    
+    allTagsHTML += tagLinkHTML;
+
     /*end LOOP for each tag in allTags: */
   }
 
@@ -259,10 +259,40 @@ addClickListenersToTags();
 
 
 
+function calculateAuthorsParams(authors) {
+  const params = { max: 0, min: 999999 };
+
+  for (let author in authors) {
+
+    console.log(author + ' is used ' + authors[author] + 'times');
+    params.max = Math.max(authors[author], params.max);
+    params.min = Math.min(authors[author], params.min);
+  }
+
+  return params;
+}
+
+
+function calculateAuthorsClass(count, params) {
+
+  const normalizedCount = count - params.min;
+  const normalizedMax = params.max - params.min;
+  const percentage = normalizedCount / normalizedMax;
+  const classNumber = Math.floor(percentage * (optCloudClassCount - 1) + 1);
+
+  return optCloudClassPrefix + classNumber;
+}
+
+
+
+
+
+
+
 
 function generateAuthors() {
 
-  let allAuthors = [];
+  let allAuthors = {};
 
   /* find all articles */
   const articles = document.querySelectorAll(optArticleSelector);
@@ -289,10 +319,12 @@ function generateAuthors() {
     html = html + linkHTML;
 
     /* [NEW] check if this link is NOT already in allTags */
-    if (allAuthors.indexOf(linkHTML) == -1) {
+    if (!allAuthors.hasOwnProperty(articleAuthors)) {
 
       /* [NEW] add generated code to allTags array */
-      allAuthors.push(linkHTML);
+      allAuthors[articleAuthors] = 1;
+    } else {
+      allAuthors[articleAuthors]++;
     }
 
     /* insert HTML of all the links into the tags wrapper */
@@ -303,7 +335,26 @@ function generateAuthors() {
   const authorsList = document.querySelector('.authors');
 
   /* [NEW] add html from allAuthors to authorList */
-  authorsList.innerHTML = allAuthors.join(' ');
+  // authorsList.innerHTML = allAuthors.join(' ');//
+
+  const authorsParams = calculateAuthorsParams(allAuthors);
+  console.log('authorsParams:', authorsParams);
+
+  /*create variable for all links HTML code*/
+  let allAuthorsHTML = '';
+
+  /*start LOOP for each author in allAuthors*/
+  for (let author in allAuthors) {
+
+    const authorLinkHTML = '<li><a class="' + calculateAuthorsClass(allAuthors[author], authorsParams) + '" href="#author-' + author + '"></a>(' + allAuthors[author] + ') ' + '</li>';
+
+    /*generate code of a link and add it to allAuthorsHTML*/
+    allAuthorsHTML += authorLinkHTML;
+
+    /*end LOOP for each author in allAuthors: */
+  }
+  /* add html from allAuthorsHTML to authorList*/
+  authorsList.innerHTML = allAuthorsHTML;
 
 }
 generateAuthors();
