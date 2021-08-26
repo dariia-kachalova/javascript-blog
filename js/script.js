@@ -332,7 +332,7 @@ function generateAuthors() {
     /* generate HTML of the link */
     //let linkHTML = '<a href="#author-' + articleAuthors + '"> <span>' + articleAuthors + '</span></a>';//
     const authorHTMLData = { id: articleAuthors, title: articleAuthors };
-    const authorHTMLLink = templates.authorLink(authorHTMLLink);
+    const authorHTMLLink = templates.authorLink(authorHTMLData);
 
 
     /* add generated code to html variable */
@@ -353,7 +353,7 @@ function generateAuthors() {
   }
   /* [NEW] find list of authors in right column */
   const authorsList = document.querySelector('.authors');
-
+  console.log(authorsList);
   /* [NEW] add html from allAuthors to authorList */
   // authorsList.innerHTML = allAuthors.join(' ');//
 
